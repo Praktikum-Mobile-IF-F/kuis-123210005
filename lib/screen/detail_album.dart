@@ -11,6 +11,7 @@ class DetailAlbum extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(album.albumName),
+        backgroundColor: Colors.green,
         actions: [
           IconButton(
               onPressed: () {
@@ -22,6 +23,7 @@ class DetailAlbum extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
+            SizedBox(height: 10,),
             Container(
               child: Image.network(album.imageUrls),
             ),
@@ -52,7 +54,7 @@ class DetailAlbum extends StatelessWidget {
             ),
             Container(
               child: Text("Song List"),
-              color: Colors.blue,
+              color: Colors.lightGreen,
               padding: EdgeInsets.all(20),
               width: MediaQuery.sizeOf(context).width,
             ),

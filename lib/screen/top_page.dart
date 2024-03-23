@@ -11,6 +11,7 @@ class TopPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Top Album"),
+        backgroundColor: Colors.green,
         centerTitle: true,
       ),
       body: GridView.builder(

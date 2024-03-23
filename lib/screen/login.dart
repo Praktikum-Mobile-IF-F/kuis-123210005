@@ -9,9 +9,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String email = "";
-  String password = "";
-  String message = "";
+  String errorMessage = "";
+  String emailError = "";
+  String passError = "";
 
   final emailController = TextEditingController();
   final passController = TextEditingController();
@@ -19,7 +19,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      appBar: AppBar(
+        title: Text("Login"),
+        centerTitle: true,
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -29,7 +32,11 @@ class _LoginPageState extends State<LoginPage> {
             child: TextFormField(
               controller: emailController,
               enabled: true,
-              decoration: InputDecoration(hintText: "Email"),
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.email),
+                  hintText: "Email",
+                  labelText: "Email",
+                  errorText: emailError.isEmpty ? null : errorMessage),
             ),
           ),
           Container(
@@ -39,8 +46,10 @@ class _LoginPageState extends State<LoginPage> {
               enabled: true,
               obscureText: true,
               decoration: InputDecoration(
-                hintText: "Password",
-              ),
+                prefixIcon: Icon(Icons.password),
+                  hintText: "Password",
+                  labelText: "Password",
+                  errorText: passError.isEmpty ? null : errorMessage),
             ),
           ),
           Container(
@@ -48,19 +57,30 @@ class _LoginPageState extends State<LoginPage> {
               width: MediaQuery.sizeOf(context).width,
               child: OutlinedButton(
                   onPressed: () {
-                    if (emailController.text != null &&
-                        passController.text != null) {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) {
-                        return TopPage();
-                      }));
-                    } else {
+                    if (emailController.text.isEmpty ||
+                        passController.text.isEmpty) {
                       setState(() {
-                        message = "Silakan masukkan email dan password";
+                        errorMessage = "Silakan masukkan password dan email";
                       });
+                    } else {
+                      if (!emailController.text.contains("@")) {
+                        setState(() {
+                          errorMessage = "Masukkan email dengan benar";
+                        });
+                      } else if (passController.text.length < 8) {
+                        setState(() {
+                          errorMessage = "Password kurang dari 8 karakter";
+                        });
+
+                      } else {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                          return TopPage();
+                        }));
+                      }
                     }
 
-                    SnackBar snackBar = SnackBar(content: Text(message));
+                    SnackBar snackBar = SnackBar(content: Text(errorMessage));
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
                   child: Text("LOGIN"))),
